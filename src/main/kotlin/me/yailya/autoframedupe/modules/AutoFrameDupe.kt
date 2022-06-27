@@ -17,22 +17,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
+import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
 import kotlin.concurrent.thread
 
 class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
-    private val delayAI = Setting("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberType.TIME)
-    private val delayAA = Setting("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberType.TIME)
-    private val searchShulkers = Setting("Search Shulkers", this, true)
+    private val delayAI = register(Setting("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberType.TIME))
+    private val delayAA = register(Setting("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberType.TIME))
+    private val searchShulkers = register(Setting("Search Shulkers", this, true))
     private val timer = Timer()
 
-    init {
-        register(delayAI)
-        register(delayAA)
-        register(searchShulkers)
-    }
-
-    @SubscribeEvent
-    fun onTick(event: TickEvent.ClientTickEvent) {
+    fun update() {
         if (mc.world == null || mc.player == null) return
         val frame = (mc.objectMouseOver.entityHit ?: return toggle())
 
@@ -59,7 +53,7 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
 
             mc.playerController.updateController()
         } else {
-            mc.player.sendMessage(TextComponentString("${ChatFormatting.RED}[AutoFrameDupe] Frame not found in your crosshair. Disabling...${ChatFormatting.RESET}"))
+            ChatUtilityAPI.error().printClientModuleMessage("Frame not found in your crosshair. Disabling...")
 
             isToggled = false
         }
