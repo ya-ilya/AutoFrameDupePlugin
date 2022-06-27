@@ -26,7 +26,7 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
     private val searchShulkers = register(Setting("Search Shulkers", this, true))
     private val timer = Timer()
 
-    fun update() {
+    override fun update() {
         if (mc.world == null || mc.player == null) return
         val frame = (mc.objectMouseOver.entityHit ?: return toggle())
 
