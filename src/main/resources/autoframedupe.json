@@ -1,0 +1,8 @@
+{
+  "name": "AutoFrameDupe",
+  "displayName" : "&aAutoFrameDupe",
+  "version" : "v1.0",
+  "prefix" : "AFD",
+  "mainClass": "me.yailya.autoframedupe.Main",
+  "mixinConfig": "mixins.autoframedupe.json"
+}
