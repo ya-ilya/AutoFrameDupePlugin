@@ -6,6 +6,7 @@ package me.yailya.autoframedupe.modules
 
 import com.kisman.cc.settings.Setting
 import com.kisman.cc.settings.types.number.NumberType
+import me.yailya.autoframedupe.events.PlayerAttackEvent
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
@@ -59,11 +60,11 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
     }
 
     @SubscribeEvent
-    fun onAttack(event: AttackEntityEvent) {
+    fun onAttack(event: PlayerAttackEvent) {
         if (event.entity == mc.player
-            && mc.objectMouseOver.entityHit == event.target
-            && event.target is EntityItemFrame
-            && (event.target as EntityItemFrame).displayedItem.isEmpty
+            && mc.objectMouseOver.entityHit == event.entity
+            && event.entity is EntityItemFrame
+            && event.entity.displayedItem.isEmpty
         ) {
             event.isCanceled = true
         }

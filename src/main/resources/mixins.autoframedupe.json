@@ -3,5 +3,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "me.yailya.autoframedupe.mixins",
   "refmap": "mixins.autoframedupe.refmap.json",
-  "mixins": []
+  "mixins": [
+    "MixinPlayerControllerMP"
+  ]
 }
