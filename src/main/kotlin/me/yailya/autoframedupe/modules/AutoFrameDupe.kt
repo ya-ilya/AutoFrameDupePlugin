@@ -6,15 +6,13 @@ package me.yailya.autoframedupe.modules
 
 import com.kisman.cc.settings.Setting
 import com.kisman.cc.settings.types.number.NumberType
-import com.mojang.realmsclient.gui.ChatFormatting
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
 import net.minecraft.item.ItemShulkerBox
 import net.minecraft.util.EnumHand
-import net.minecraft.util.text.TextComponentString
+import net.minecraftforge.event.entity.player.AttackEntityEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
 import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
@@ -27,10 +25,11 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
     private val timer = Timer()
 
     override fun update() {
+        if (!timer.ended) return
         if (mc.world == null || mc.player == null) return
         val frame = (mc.objectMouseOver.entityHit ?: return toggle())
 
-        if (frame is EntityItemFrame && timer.ended) {
+        if (frame is EntityItemFrame) {
             if (frame.displayedItem.isEmpty) {
                 if (searchShulkers.valBoolean
                     && !(mc.player.isCreative && mc.currentScreen is GuiContainer)
@@ -56,6 +55,17 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
             ChatUtilityAPI.error().printClientModuleMessage("Frame not found in your crosshair. Disabling...")
 
             isToggled = false
+        }
+    }
+
+    @SubscribeEvent
+    fun onAttack(event: AttackEntityEvent) {
+        if (event.entity == mc.player
+            && mc.objectMouseOver.entityHit == event.target
+            && event.target is EntityItemFrame
+            && (event.target as EntityItemFrame).displayedItem.isEmpty
+        ) {
+            event.isCanceled = true
         }
     }
 
