@@ -61,10 +61,7 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
 
     @SubscribeEvent
     fun onAttack(event: PlayerAttackEvent) {
-        if (mc.objectMouseOver.entityHit == event.entity
-            && event.entity is EntityItemFrame
-            && event.entity.displayedItem.isEmpty
-        ) {
+        if (mc.objectMouseOver.entityHit == event.entity && event.entity is EntityItemFrame && event.entity.displayedItem.isEmpty) {
             event.isCanceled = true
         }
     }
