@@ -13,12 +13,13 @@ import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
 import org.spongepowered.asm.mixin.injection.Inject
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
+import the.kis.devs.api.KismanAPI
 
 @Mixin(PlayerControllerMP::class)
 abstract class MixinPlayerControllerMP {
     @Inject(method = ["attackEntity"], at = [At("HEAD")], cancellable = true)
     fun onAttack(playerIn: EntityPlayer, targetEntity: Entity, ci: CallbackInfo) {
-        if (MinecraftForge.EVENT_BUS.post(PlayerAttackEvent(targetEntity))) {
+        if (KismanAPI.getEventBus().post(PlayerAttackEvent(targetEntity))) {
             ci.cancel()
         }
     }
