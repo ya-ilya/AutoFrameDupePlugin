@@ -13,8 +13,6 @@ import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
 import net.minecraft.item.ItemShulkerBox
 import net.minecraft.util.EnumHand
-import net.minecraftforge.event.entity.player.AttackEntityEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
 import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
@@ -72,8 +70,8 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
     }
     
     private val playerAttack = Listener<PlayerAttackEvent>(EventHook {
-        if (mc.objectMouseOver.entityHit == event.entity && event.entity is EntityItemFrame && event.entity.displayedItem.isEmpty) {
-            event.cancel()
+        if (mc.objectMouseOver.entityHit == it.entity && it.entity is EntityItemFrame && it.entity.displayedItem.isEmpty) {
+            it.cancel()
         }
     })
 
