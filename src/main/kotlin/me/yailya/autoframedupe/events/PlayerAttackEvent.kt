@@ -5,8 +5,6 @@
 package me.yailya.autoframedupe.events
 
 import net.minecraft.entity.Entity
-import net.minecraftforge.fml.common.eventhandler.Cancelable
-import net.minecraftforge.fml.common.eventhandler.Event
+import com.kisman.cc.event.Event
 
-@Cancelable
 class PlayerAttackEvent(val entity: Entity) : Event()

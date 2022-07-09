@@ -7,23 +7,33 @@ package me.yailya.autoframedupe.modules
 import com.kisman.cc.settings.Setting
 import com.kisman.cc.settings.types.number.NumberType
 import me.yailya.autoframedupe.events.PlayerAttackEvent
+import me.zero.alpine.listener.*
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
 import net.minecraft.item.ItemShulkerBox
 import net.minecraft.util.EnumHand
-import net.minecraftforge.event.entity.player.AttackEntityEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
 import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
 import kotlin.concurrent.thread
+import the.kis.devs.api.KismanAPI
 
 class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
     private val delayAI = register(Setting("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberType.TIME))
     private val delayAA = register(Setting("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberType.TIME))
     private val searchShulkers = register(Setting("Search Shulkers", this, true))
     private val timer = Timer()
+    
+    override fun onEnable() {
+        super.onEnable()
+        KismanAPI.getEventBus().subscribe(playerAttack)
+    }
+    
+    override fun onDisable() {
+        super.onDisable()
+        KismanAPI.getEventBus().unsubscribe(playerAttack)
+    }
 
     override fun update() {
         if (!timer.ended) return
@@ -58,13 +68,12 @@ class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
             isToggled = false
         }
     }
-
-    @SubscribeEvent
-    fun onAttack(event: PlayerAttackEvent) {
-        if (mc.objectMouseOver.entityHit == event.entity && event.entity is EntityItemFrame && event.entity.displayedItem.isEmpty) {
-            event.isCanceled = true
+    
+    private val playerAttack = Listener<PlayerAttackEvent>(EventHook {
+        if (mc.objectMouseOver.entityHit == it.entity && it.entity is EntityItemFrame && it.entity.displayedItem.isEmpty) {
+            it.cancel()
         }
-    }
+    })
 
     private fun swapItems(slotIdFrom: Int, slotIdTo: Int) {
         inventoryPickup(slotIdFrom)
