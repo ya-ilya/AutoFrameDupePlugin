@@ -11,9 +11,9 @@ import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
 import net.minecraft.item.ItemShulkerBox
 import net.minecraft.util.EnumHand
-import the.kis.devs.api.features.settings.SettingAPI
-import the.kis.devs.api.features.settings.types.SettingGroupAPI
-import the.kis.devs.api.features.settings.types.number.NumberTypeAPI
+import the.kis.devs.api.settings.SettingAPI
+import the.kis.devs.api.settings.types.SettingGroupAPI
+import the.kis.devs.api.settings.types.number.NumberTypeAPI
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
 import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
@@ -21,9 +21,9 @@ import kotlin.concurrent.thread
 import the.kis.devs.api.KismanAPI
 
 class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
-    private val delays = register(SettingGroupAPI(Setting("Delays", this)))
-    private val delayAI = register(delays.add(SettingAPI("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberTypeAPI.TIME.getFormatter()).setTitle("After Interact")))
-    private val delayAA = register(delays.add(SettingAPI("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberTypeAPI.TIME.getFormatter()).setTitle("After Attack")))
+    private val delays = register(SettingGroupAPI(SettingAPI("Delays", this)))
+    private val delayAI = register(delays.add(SettingAPI("After Interact", this, 3000.0, 0.0, 4000.0, NumberTypeAPI.TIME.formatter)))
+    private val delayAA = register(delays.add(SettingAPI("After Attack", this, 100.0, 0.0, 4000.0, NumberTypeAPI.TIME.formatter)))
     private val searchShulkers = register(SettingAPI("Search Shulkers", this, true))
     private val timer = Timer()
     
