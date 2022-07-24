@@ -4,8 +4,6 @@
 
 package me.yailya.autoframedupe.modules
 
-import com.kisman.cc.settings.Setting
-import com.kisman.cc.settings.types.number.NumberType
 import me.yailya.autoframedupe.events.PlayerAttackEvent
 import me.zero.alpine.listener.*
 import net.minecraft.client.gui.inventory.GuiContainer
@@ -13,6 +11,9 @@ import net.minecraft.entity.item.EntityItemFrame
 import net.minecraft.inventory.ClickType
 import net.minecraft.item.ItemShulkerBox
 import net.minecraft.util.EnumHand
+import the.kis.devs.api.features.settings.SettingAPI
+import the.kis.devs.api.features.settings.types.SettingGroupAPI
+import the.kis.devs.api.features.settings.types.number.NumberTypeAPI
 import the.kis.devs.api.features.module.CategoryAPI
 import the.kis.devs.api.features.module.ModuleAPI
 import the.kis.devs.api.util.chat.cubic.ChatUtilityAPI
@@ -20,9 +21,10 @@ import kotlin.concurrent.thread
 import the.kis.devs.api.KismanAPI
 
 class AutoFrameDupe : ModuleAPI("AutoFrameDupe", "", CategoryAPI.EXPLOIT) {
-    private val delayAI = register(Setting("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberType.TIME))
-    private val delayAA = register(Setting("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberType.TIME))
-    private val searchShulkers = register(Setting("Search Shulkers", this, true))
+    private val delays = register(SettingGroupAPI(Setting("Delays", this)))
+    private val delayAI = register(delays.add(SettingAPI("Delay After Interact", this, 3000.0, 0.0, 4000.0, NumberTypeAPI.TIME.getFormatter()).setTitle("After Interact")))
+    private val delayAA = register(delays.add(SettingAPI("Delay After Attack", this, 100.0, 0.0, 4000.0, NumberTypeAPI.TIME.getFormatter()).setTitle("After Attack")))
+    private val searchShulkers = register(SettingAPI("Search Shulkers", this, true))
     private val timer = Timer()
     
     override fun onEnable() {
