@@ -4,7 +4,6 @@
 
 package me.yailya.autoframedupe.modules
 
-import com.kisman.cc.settings.types.number.NumberType
 import me.yailya.autoframedupe.events.PlayerAttackEvent
 import me.zero.alpine.listener.*
 import net.minecraft.client.gui.inventory.GuiContainer
